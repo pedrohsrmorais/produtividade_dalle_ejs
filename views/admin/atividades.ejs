@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Atividades Cadastradas</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+    <a href="/admin" class="admin-button" style="margin-top: 0px;">⬅ Voltar ao menu</a>
+    <div class="admin-container">
+        <h1>📋 Todas as Atividades</h1>
+
+        <form method="GET" action="/admin/atividades"
+            style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+            <label for="usuario">Usuário:</label>
+            <select name="usuario" id="usuario">
+                <option value="">Todos</option>
+                <% usuarios.forEach(u=> { %>
+                    <option value="<%= u.id %>" <%=filtroUsuario==u.id ? 'selected' : '' %>><%= u.nome %>
+                    </option>
+                    <% }) %>
+            </select>
+
+            <label for="dataInicio">De:</label>
+            <input type="date" name="dataInicio" id="dataInicio" value="<%= dataInicio || '' %>">
+
+            <label for="dataFim">Até:</label>
+            <input type="date" name="dataFim" id="dataFim" value="<%= dataFim || '' %>">
+
+            <button type="submit">Filtrar</button>
+            <a href="/admin/atividades" class="admin-button">Resetar Filtro</a>
+        </form>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Data</th>
+                    <th>Impacto</th>
+                    <th>Status</th>
+                    <th>Responsável</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (atividades.length> 0) { %>
+                    <% atividades.forEach(a=> { %>
+                        <tr>
+                            <td>
+                                <%= a.descricao %>
+                            </td>
+                            <td>
+                                <%= new Date(a.data_atividade).toLocaleDateString('pt-BR', { day: '2-digit' ,
+                                    month: '2-digit' , year: 'numeric' }) %>
+                            </td>
+
+                            <td>
+                                <%= a.impacto %>
+                            </td>
+                            <td>
+                                <%= a.status %>
+                            </td>
+                            <td>
+                                <%= a.nome_responsavel %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5">Nenhuma atividade encontrada.</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+
+</html>

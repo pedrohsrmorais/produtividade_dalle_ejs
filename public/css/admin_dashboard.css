@@ -1,0 +1,227 @@
+/* Reset e base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #f4f6f8;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+/* Estrutura */
+.container {
+    max-width: 1200px;
+    width: 100%;
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    margin-bottom: 20px;
+    color: #222;
+    text-align: center;
+}
+
+h2 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
+
+/* Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+thead tr {
+    background: #007BFF;
+    color: #fff;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+tbody tr:not(.detail-container):hover {
+    background: #f1f1f1;
+}
+
+/* Botões */
+button,
+form.add-user-form button[type="submit"] {
+    background: #007BFF;
+    color: #fff;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    margin: 4px;
+    white-space: nowrap;
+}
+
+button:hover,
+form.add-user-form button[type="submit"]:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+button:active,
+form.add-user-form button[type="submit"]:active {
+    background: #00408d;
+    transform: translateY(0);
+}
+
+.delete-button {
+    background: #dc3545;
+}
+.delete-button:hover {
+    background: #c82333;
+}
+
+/* Formulário */
+form.add-user-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+}
+
+form.add-user-form input,
+form.add-user-form select {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+form.add-user-form input:focus,
+form.add-user-form select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+form.add-user-form button[type="submit"] {
+    background: #28a745;
+    font-size: 1rem;
+    min-width: 150px;
+    margin-left: auto;
+}
+
+/* Logout */
+.logout-link {
+    margin-left: auto;
+    color: #6c757d;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    float: right;
+}
+
+.logout-link:hover {
+    color: #495057;
+    text-decoration: underline;
+}
+
+/* Detalhes e atividades */
+.detail-container {
+    display: none;
+}
+.detail-container.visible {
+    display: table-row;
+}
+.detail-container td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+.detail-content {
+    padding: 0;
+}
+.atividade-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.atividade-item:last-child {
+    margin-bottom: 0;
+}
+.atividade-item strong {
+    color: #0056b3;
+}
+.atividade-item hr {
+    border: none;
+    border-top: 1px dashed #eee;
+    margin: 10px 0;
+}
+
+/* Menu admin */
+.admin-menu button {
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: #007BFF;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 14px;
+}
+.admin-menu button:hover {
+    text-decoration: underline;
+}
+.admin-menu button.active {
+    border-bottom: 2px solid #007BFF;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    th, td {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    button,
+    form.add-user-form button[type="submit"] {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    form.add-user-form {
+        flex-direction: column;
+    }
+    form.add-user-form input,
+    form.add-user-form select {
+        width: 100%;
+    }
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Atividades do dia <%= dataAtual %>
+    </title>
+    <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+
+<body>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px;">
+        <h1>Atividades - <%= dataAtual %>
+        </h1>
+        <div>
+            <strong>Bem-vindo, <%= usuario.nome %></strong> |
+            <a href="/logout" style="text-decoration: none; color: #e74c3c;">Sair</a>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <form method="GET" action="/user/dashboard">
+            <input type="hidden" name="data" value="<%= diaAnterior %>">
+            <button type="submit">⬅ Dia anterior</button>
+        </form>
+
+        <form method="GET" action="/user/dashboard">
+            <input type="hidden" name="data" value="<%= proximoDia %>">
+            <button type="submit">Dia seguinte ➡</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Data</th>
+                <th>Impacto</th>
+                <th>Responsável</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (atividades.length> 0) { %>
+                <% atividades.forEach(a=> {
+                    // Transforma a.data_atividade de 'DD/MM/YYYY' para 'YYYY-MM-DD'
+                    const [dia, mes, ano] = a.data_atividade.split('/');
+                    const dataAtividadeFormatada = `${ano}-${mes}-${dia}`;
+                    %>
+                    <tr>
+                        <td>
+                            <%= a.descricao %>
+                        </td>
+                        <td>
+                            <%= a.data_atividade %>
+                        </td>
+                        <td>
+                            <%= a.impacto %>
+                        </td>
+                        <td>
+                            <%= a.nome_responsavel %>
+                        </td>
+                        <td>
+                            <% if (a.status==='iniciada' && dataAtividadeFormatada===dataAtual) { %>
+                                <form action="/user/atividades/<%= a.id %>/finalizar" method="POST"
+                                    style="display: inline;">
+                                    <button type="submit" class="status-button">Finalizar</button>
+                                </form>
+                                <% } else { %>
+                                    <span>
+                                        <%= a.status %>
+                                    </span>
+                                    <% } %>
+                        </td>
+                    </tr>
+                    <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5">Nenhuma atividade encontrada para esta data.</td>
+                            </tr>
+                            <% } %>
+
+        </tbody>
+    </table>
+
+    <div style="margin: 20px 0;">
+        <form action="/user/atividades" method="POST" style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="hidden" name="data_atividade" value="<%= dataAtual %>">
+            <input type="text" name="descricao" placeholder="Descrição" required>
+            <select name="impacto" required>
+                <option disabled selected>Impacto</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>5</option>
+                <option>8</option>
+                <option>13</option>
+                <option>21</option>
+            </select>
+            <button type="submit">Cadastrar Atividade</button>
+        </form>
+    </div>
+
+    <% if (erro) { %>
+        <script>
+            alert("<%= erro %>");
+        </script>
+        <% } %>
+
+</body>
+
+</html>

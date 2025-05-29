@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuários</title>
+    <link rel="stylesheet" href="/css/usuarios.css">
+</head>
+
+<body>
+    <a href="/admin" class="botao-menu">🏠 Menu do Administrador</a>
+
+    <div class="container">
+        <h1>Lista de Usuários</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (usuarios.length> 0) { %>
+                    <% usuarios.forEach(u=> { %>
+                        <tr>
+                            <td>
+                                <%= u.nome %>
+                            </td>
+                            <td>
+                                <%= u.email %>
+                            </td>
+                            <td><a href="/admin/relatorio/<%= u.id %>" class="botao-relatorio">Ver relatório</a></td>
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="3">Nenhum usuário encontrado.</td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+
+
+    </div>
+
+</body>
+
+</html>

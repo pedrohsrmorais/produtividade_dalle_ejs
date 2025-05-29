@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório Geral</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <a href="/admin" class="admin-button" style="margin-top:0px; display: inline-block;">⬅ Voltar ao menu</a>
+    <div class="admin-container">
+        <h1>Relatório Geral</h1>
+
+        <form method="GET" action="/admin/relatorio-geral" class="filtro-datas">
+            <label>
+                De:
+                <input type="date" name="dataInicio" value="<%= dataInicio %>" required>
+            </label>
+            <label>
+                Até:
+                <input type="date" name="dataFim" value="<%= dataFim %>" required>
+            </label>
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <button style="float:right">Gerar PDF</button>
+
+        <br><br>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuário</th>
+                    <th>Finalizadas</th>
+                    <th>Não Finalizadas</th>
+                    <th>Impacto Total</th>
+                    <th>Impacto Médio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linha de Totais -->
+                <tr class="linha-total">
+                    <td><strong>Total</strong></td>
+                    <td>
+                        <%= totais.finalizadas %>
+                    </td>
+                    <td>
+                        <%= totais.nao_finalizadas %>
+                    </td>
+                    <td>
+                        <%= totais.impacto_total %>
+                    </td>
+                    <td>
+                        <%= totais.impacto_medio %>
+                    </td>
+                </tr>
+
+                <!-- Linhas dos usuários -->
+                <% usuarios.forEach(u=> { %>
+                    <tr>
+                        <td>
+                            <%= u.nome %>
+                        </td>
+                        <td>
+                            <%= u.finalizadas || 0 %>
+                        </td>
+                        <td>
+                            <%= u.nao_finalizadas || 0 %>
+                        </td>
+                        <td>
+                            <%= u.impacto_total || 0 %>
+                        </td>
+                        <td>
+                            <%= u.impacto_medio || 0 %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Gráfico de barras -->
+        <h2 style="margin-top: 50px;">Atividades Finalizadas por Usuário</h2>
+        <canvas id="graficoFinalizadas" width="600" height="300" style="margin-top: 20px;"></canvas>
+
+
+    </div>
+
+    <script>
+        // Dados brutos
+        const usuarios = <% - JSON.stringify(usuarios) %>;
+
+        // Ordenar por número de atividades finalizadas (decrescente) e pegar os 5 maiores
+        const top5 = usuarios
+            .slice()
+            .sort((a, b) => (b.finalizadas || 0) - (a.finalizadas || 0))
+            .slice(0, 5);
+
+        // Extrair nomes e valores
+        const labels = top5.map(u => u.nome);
+        const data = top5.map(u => u.finalizadas || 0);
+
+        // Criar o gráfico
+        const ctx = document.getElementById('graficoFinalizadas').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Top 5 - Atividades Finalizadas',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>
