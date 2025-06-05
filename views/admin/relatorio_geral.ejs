@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <title>Relatório Geral</title>
     <link rel="stylesheet" href="/css/admin.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
-    <a href="/admin" class="admin-button" style="margin-top:0px; display: inline-block;">⬅ Voltar ao menu</a>
+    <a href="/admin" class="admin-button" style="margin-top:0px;">⬅ Voltar ao menu</a>
     <div class="admin-container">
         <h1>Relatório Geral</h1>
 
@@ -22,11 +24,22 @@
                 Até:
                 <input type="date" name="dataFim" value="<%= dataFim %>" required>
             </label>
+            <br><br>
+            <label for="usuario">Usuários:</label>
+<br>
+            <select name="usuario" id="usuario" multiple>
+                <% listaUsuarios.forEach(u=> { %>
+                    <option value="<%= u.id %>" <%=Array.isArray(filtroUsuario) && filtroUsuario.includes(String(u.id))
+                        ? 'selected' : '' %>><%= u.nome %>
+                    </option>
+                    <% }) %>
+            </select>
+
+<br><br>
             <button type="submit">Filtrar</button>
         </form>
 
         <button style="float:right">Gerar PDF</button>
-
         <br><br>
 
         <table>
@@ -37,6 +50,8 @@
                     <th>Não Finalizadas</th>
                     <th>Impacto Total</th>
                     <th>Impacto Médio</th>
+                    <th>Tempo Médio</th>
+                    <th>Tempo Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,9 +70,14 @@
                     <td>
                         <%= totais.impacto_medio %>
                     </td>
+                    <td>
+                        <%= totais.tempo_medio %>
+                    </td>
+                    <td>
+                        <%= totais.tempo_total %>
+                    </td>
                 </tr>
 
-                <!-- Linhas dos usuários -->
                 <% usuarios.forEach(u=> { %>
                     <tr>
                         <td>
@@ -73,62 +93,31 @@
                             <%= u.impacto_total || 0 %>
                         </td>
                         <td>
-                            <%= u.impacto_medio || 0 %>
+                            <%= u.impacto_medio || '0.00' %>
+                        </td>
+                        <td>
+                            <%= u.tempo_medio_finalizadas || '00:00' %>
+                        </td>
+                        <td>
+                            <%= u.tempo_total_finalizadas || '00:00' %>
                         </td>
                     </tr>
                     <% }) %>
             </tbody>
         </table>
-
-        <!-- Gráfico de barras -->
-        <h2 style="margin-top: 50px;">Atividades Finalizadas por Usuário</h2>
-        <canvas id="graficoFinalizadas" width="600" height="300" style="margin-top: 20px;"></canvas>
-
-
     </div>
 
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        // Dados brutos
-        const usuarios = <% - JSON.stringify(usuarios) %>;
-
-        // Ordenar por número de atividades finalizadas (decrescente) e pegar os 5 maiores
-        const top5 = usuarios
-            .slice()
-            .sort((a, b) => (b.finalizadas || 0) - (a.finalizadas || 0))
-            .slice(0, 5);
-
-        // Extrair nomes e valores
-        const labels = top5.map(u => u.nome);
-        const data = top5.map(u => u.finalizadas || 0);
-
-        // Criar o gráfico
-        const ctx = document.getElementById('graficoFinalizadas').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Top 5 - Atividades Finalizadas',
-                    data: data,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            precision: 0
-                        }
-                    }
-                }
-            }
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#usuario').select2({
+                placeholder: "Selecione um ou mais usuários",
+                allowClear: true,
+                width: '300px'
+            });
         });
     </script>
-
 
 </body>
 

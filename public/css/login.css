@@ -46,14 +46,14 @@ form input {
 }
 
 form input:focus {
-    border-color: #4e54c8;
+    border-color: #be1722;
     outline: none;
 }
 
 button {
     width: 100%;
     padding: 12px;
-    background-color: #4e54c8;
+    background-color: #6A2328;
     color: white;
     font-size: 16px;
     border: none;
@@ -64,7 +64,7 @@ button {
 }
 
 button:hover {
-    background-color: #3b40a0;
+    background-color: #3f191b;
 }
 
 p {

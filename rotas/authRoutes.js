@@ -3,19 +3,17 @@ const router = express.Router();
 const connection = require('../db/connection');
 const path = require('path');
 
-// Página inicial pública (landing)
+// Redireciona para a página de login
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.redirect('/login');
 });
+
 
 // Formulários
 router.get('/login', (req, res) => {
   res.render('auth/login'); // views/auth/login.ejs
 });
 
-router.get('/register', (req, res) => {
-  res.render('auth/register'); // views/auth/register.ejs
-});
 
 // Processa login
 router.post('/login', (req, res) => {
@@ -25,14 +23,13 @@ router.post('/login', (req, res) => {
   connection.query(query, [email], (err, results) => {
     if (err) {
       console.error('Erro ao buscar usuário:', err);
-      return res.send('Erro no banco de dados.');
+      return res.render('auth/login', { error: 'Erro interno. Tente novamente mais tarde.' });
     }
 
     if (results.length > 0) {
       const user = results[0];
 
       if (senha === user.senha) {
-        // Armazena dados da sessão
         req.session.user = {
           id: user.id,
           nome: user.nome,
@@ -40,20 +37,20 @@ router.post('/login', (req, res) => {
           tipo: user.tipo
         };
 
-        // Redirecionamento por tipo
         if (user.tipo === 'admin') {
           res.redirect('/admin');
         } else {
           res.redirect('/user/dashboard');
         }
       } else {
-        res.send('Usuário ou senha inválidos.');
+        res.render('auth/login', { error: 'Usuário ou senha inválidos.' });
       }
     } else {
-      res.send('Usuário ou senha inválidos.');
+      res.render('auth/login', { error: 'Usuário ou senha inválidos.' });
     }
   });
 });
+
 
 // Processa registro
 router.post('/register', (req, res) => {
@@ -67,7 +64,8 @@ router.post('/register', (req, res) => {
       return res.send('Erro ao cadastrar.');
     }
 
-    res.send('Cadastro realizado com sucesso! Faça login <a href="/login">aqui</a>.');
+    // Redireciona para a lista de usuários após o cadastro
+    res.redirect('/admin/usuarios');
   });
 });
 

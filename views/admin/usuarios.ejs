@@ -1,50 +1,72 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Lista de Usuários</title>
-    <link rel="stylesheet" href="/css/usuarios.css">
+  <meta charset="UTF-8">
+  <title>Lista de Usuários</title>
+  <link rel="stylesheet" href="/css/usuarios.css">
 </head>
-
 <body>
-    <a href="/admin" class="botao-menu">🏠 Menu do Administrador</a>
+  <a href="/admin" class="botao-menu" style="margin-top: 0px;">⬅ Voltar ao menu</a>
 
-    <div class="container">
-        <h1>Lista de Usuários</h1>
+  <div class="container">
+    <h1>Lista de Usuários</h1>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (usuarios.length> 0) { %>
-                    <% usuarios.forEach(u=> { %>
-                        <tr>
-                            <td>
-                                <%= u.nome %>
-                            </td>
-                            <td>
-                                <%= u.email %>
-                            </td>
-                            <td><a href="/admin/relatorio/<%= u.id %>" class="botao-relatorio">Ver relatório</a></td>
-                        </tr>
-                        <% }) %>
-                            <% } else { %>
-                                <tr>
-                                    <td colspan="3">Nenhum usuário encontrado.</td>
-                                </tr>
-                                <% } %>
-            </tbody>
-        </table>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (usuarios.length > 0) { %>
+          <% usuarios.forEach(u => { %>
+            <tr>
+              <td><%= u.nome %></td>
+              <td><%= u.email %></td>
+              <td>
+                <a href="/admin/relatorio/<%= u.id %>" class="botao-relatorio">Ver relatório</a>
+                <form action="/admin/usuarios/<%= u.id %>/excluir" method="POST" class="form-excluir" style="display:inline;">
+                  <button type="submit" class="botao-excluir">Excluir</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="3">Nenhum usuário encontrado.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
 
+    <hr>
+    <h2>Cadastrar Novo Usuário</h2>
+    <form action="/register" method="POST" class="form-cadastro">
+      <input type="text" name="nome" placeholder="Nome completo" required>
+      <input type="email" name="email" placeholder="E-mail" required>
+      <input type="password" name="senha" placeholder="Senha" required>
+      <button type="submit">Cadastrar</button>
+    </form>
+  </div>
 
-    </div>
+  <script>
+    // Intercepta o envio dos formulários de exclusão
+    document.querySelectorAll('.form-excluir').forEach(form => {
+      form.addEventListener('submit', function (e) {
+        const confirm1 = confirm('Tem certeza que deseja excluir este usuário?');
+        if (!confirm1) {
+          e.preventDefault();
+          return;
+        }
 
+        const confirm2 = confirm('Todas as atividades vinculadas a este usuário serão excluídas. Deseja continuar?');
+        if (!confirm2) {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>
 </body>
-
 </html>

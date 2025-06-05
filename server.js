@@ -6,7 +6,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt'); // Embora usado nas rotas, é bom ter aqui para contexto
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // Importar os módulos de rotas
 const authRoutes = require('./rotas/authRoutes');

@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <title>Relatório do Usuário</title>
   <link rel="stylesheet" href="/css/relatorio.css">
 
 </head>
+
 <body>
-  <h1>Relatório do Usuário ID: <%= usuarioId %></h1>
+  <h1>Relatório do Usuário ID: <%= usuarioId %>
+  </h1>
 
   <ul>
-    <li><strong>Atividades Finalizadas:</strong> <%= relatorio.finalizadas || 0 %></li>
-    <li><strong>Atividades Não Finalizadas:</strong> <%= relatorio.nao_finalizadas || 0 %></li>
-    <li><strong>Impacto Total:</strong> <%= relatorio.impacto_total || 0 %></li>
-    <li><strong>Impacto Médio:</strong> <%= relatorio.impacto_medio || 0 %></li>
+    <li><strong>Atividades Finalizadas:</strong>
+      <%= relatorio.finalizadas || 0 %>
+    </li>
+    <li><strong>Atividades Não Finalizadas:</strong>
+      <%= relatorio.nao_finalizadas || 0 %>
+    </li>
+    <li><strong>Impacto Total:</strong>
+      <%= relatorio.impacto_total || 0 %>
+    </li>
+    <li><strong>Impacto Médio:</strong>
+      <%= relatorio.impacto_medio || 0 %>
+    </li>
+    <li><strong>Duração Média:</strong>
+      <%= relatorio.duracao_media || '00:00' %>
+    </li>
+
+
   </ul>
 
   <a href="/admin/usuarios">← Voltar para lista</a>
 </body>
+
 </html>

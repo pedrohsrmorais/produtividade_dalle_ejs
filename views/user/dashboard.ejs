@@ -9,7 +9,6 @@
 </head>
 
 <body>
-
     <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px;">
         <h1>Atividades - <%= dataAtual %>
         </h1>
@@ -30,66 +29,14 @@
             <button type="submit">Dia seguinte ➡</button>
         </form>
     </div>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Descrição</th>
-                <th>Data</th>
-                <th>Impacto</th>
-                <th>Responsável</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (atividades.length> 0) { %>
-                <% atividades.forEach(a=> {
-                    // Transforma a.data_atividade de 'DD/MM/YYYY' para 'YYYY-MM-DD'
-                    const [dia, mes, ano] = a.data_atividade.split('/');
-                    const dataAtividadeFormatada = `${ano}-${mes}-${dia}`;
-                    %>
-                    <tr>
-                        <td>
-                            <%= a.descricao %>
-                        </td>
-                        <td>
-                            <%= a.data_atividade %>
-                        </td>
-                        <td>
-                            <%= a.impacto %>
-                        </td>
-                        <td>
-                            <%= a.nome_responsavel %>
-                        </td>
-                        <td>
-                            <% if (a.status==='iniciada' && dataAtividadeFormatada===dataAtual) { %>
-                                <form action="/user/atividades/<%= a.id %>/finalizar" method="POST"
-                                    style="display: inline;">
-                                    <button type="submit" class="status-button">Finalizar</button>
-                                </form>
-                                <% } else { %>
-                                    <span>
-                                        <%= a.status %>
-                                    </span>
-                                    <% } %>
-                        </td>
-                    </tr>
-                    <% }) %>
-                        <% } else { %>
-                            <tr>
-                                <td colspan="5">Nenhuma atividade encontrada para esta data.</td>
-                            </tr>
-                            <% } %>
-
-        </tbody>
-    </table>
-
-    <div style="margin: 20px 0;">
-        <form action="/user/atividades" method="POST" style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <div class="form-wrapper">
+        <form action="/user/atividades" method="POST" id="formAtividade" class="form-atividade">
             <input type="hidden" name="data_atividade" value="<%= dataAtual %>">
-            <input type="text" name="descricao" placeholder="Descrição" required>
-            <select name="impacto" required>
-                <option disabled selected>Impacto</option>
+
+            <input type="text" name="descricao" placeholder="Descrição" class="form-input" required>
+            <input type="time" name="duracao_atividade" value="00:30" class="form-input" required>
+            <select name="impacto" class="form-select" required>
+                <option value="" disabled selected>Impacto</option>
                 <option>1</option>
                 <option>2</option>
                 <option>3</option>
@@ -98,15 +45,125 @@
                 <option>13</option>
                 <option>21</option>
             </select>
-            <button type="submit">Cadastrar Atividade</button>
+
+            <select name="turno" class="form-select" required>
+                <option value="" disabled selected>Turno</option>
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+            </select>
+
+            <button type="submit" class="form-button">Cadastrar Atividade</button>
         </form>
     </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Duração</th>
+                <th>Impacto</th>
+                <th>Responsável</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% const manha=atividades.filter(a=> a.turno === 'manha'); %>
+                <% const tarde=atividades.filter(a=> a.turno === 'tarde'); %>
+
+                    <% if (manha.length > 0) { %>
+  <tr>
+    <td colspan="6" class="linha-manha">Manhã</td>
+  </tr>
+  <% manha.forEach(a => { %>
+    <tr class="linha-atividade-manha">
+      <td><%= a.descricao %></td>
+      <td><%= a.duracao_atividade %></td>
+      <td><%= a.impacto %></td>
+      <td><%= a.nome_responsavel %></td>
+      <td>
+        <% if (a.status === 'iniciada' && a.data_formatada === dataAtual) { %>
+          <form action="/user/atividades/<%= a.id %>/finalizar" method="POST" style="display:inline;">
+            <button type="submit" class="status-button">Finalizar</button>
+          </form>
+        <% } else { %>
+          <span><%= a.status %></span>
+        <% } %>
+      </td>
+      <td>
+        <form action="/user/atividades/<%= a.id %>/excluir" method="POST"
+          onsubmit="return confirm('Tem certeza que deseja excluir esta atividade?');" style="display:inline;">
+          <button type="submit" class="delete-button">Excluir</button>
+        </form>
+      </td>
+    </tr>
+  <% }); %>
+<% } %>
+
+<% if (tarde.length > 0) { %>
+  <tr>
+    <td colspan="6" class="linha-tarde">Tarde</td>
+  </tr>
+  <% tarde.forEach(a => { %>
+    <tr class="linha-atividade-tarde">
+      <td><%= a.descricao %></td>
+      <td><%= a.duracao_atividade %></td>
+      <td><%= a.impacto %></td>
+      <td><%= a.nome_responsavel %></td>
+      <td>
+        <% if (a.status === 'iniciada' && a.data_formatada === dataAtual) { %>
+          <form action="/user/atividades/<%= a.id %>/finalizar" method="POST" style="display:inline;">
+            <button type="submit" class="status-button">Finalizar</button>
+          </form>
+        <% } else { %>
+          <span><%= a.status %></span>
+        <% } %>
+      </td>
+      <td>
+        <form action="/user/atividades/<%= a.id %>/excluir" method="POST"
+          onsubmit="return confirm('Tem certeza que deseja excluir esta atividade?');" style="display:inline;">
+          <button type="submit" class="delete-button">Excluir</button>
+        </form>
+      </td>
+    </tr>
+  <% }); %>
+<% } %>
+        </tbody>
+    </table>
+
+
 
     <% if (erro) { %>
         <script>
             alert("<%= erro %>");
         </script>
         <% } %>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const formAtividade = document.getElementById('formAtividade');
+                    const dataAtividadeInput = formAtividade.querySelector('input[name="data_atividade"]');
+                    const impactoSelect = formAtividade.querySelector('select[name="impacto"]');
+
+                    formAtividade.addEventListener('submit', function (e) {
+                        const hoje = new Date();
+                        const yyyyMMddHoje = hoje.toISOString().split('T')[0];
+                        const dataSelecionada = dataAtividadeInput.value;
+
+                        if (dataSelecionada < yyyyMMddHoje) {
+                            e.preventDefault();
+                            alert("Você não pode cadastrar atividades em datas passadas.");
+                            return;
+                        }
+
+                        if (!impactoSelect.value) {
+                            e.preventDefault();
+                            alert("Por favor, selecione um valor de impacto válido.");
+                            return;
+                        }
+                    });
+                });
+            </script>
 
 </body>
 

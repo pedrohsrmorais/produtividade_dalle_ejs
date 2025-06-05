@@ -11,13 +11,13 @@ body {
   margin: auto;
   background-color: #ffffff;
   padding: 30px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
 
 h1 {
   text-align: center;
-  color: #2c3e50;
+  color: #741e24;
   margin-bottom: 20px;
 }
 
@@ -27,7 +27,8 @@ table {
   margin-bottom: 30px;
 }
 
-th, td {
+th,
+td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -43,7 +44,7 @@ tr:hover {
 }
 
 .botao-relatorio {
-  background-color: #3498db;
+  background-color: #6A2328;
   color: white;
   padding: 8px 12px;
   border-radius: 4px;
@@ -52,19 +53,36 @@ tr:hover {
 }
 
 .botao-relatorio:hover {
-  background-color: #2980b9;
+  background-color: #ad2932;
 }
 
 .botao-menu {
   display: inline-block;
-  background-color: #2071a7;
+  background-color: #6A2328;
   color: white;
-  padding: 10px 20px;
+  padding: 8px 16px;
   border-radius: 4px;
   text-decoration: none;
   font-weight: bold;
 }
 
 .botao-menu:hover {
-  background-color: #1a5c87;
+  background-color: #4d171b;
+}
+
+
+.botao-excluir {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 10px;
+  margin-left: 30px;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.botao-excluir:hover {
+  background-color: #c0392b;
 }

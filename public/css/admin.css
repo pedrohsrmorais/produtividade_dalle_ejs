@@ -18,12 +18,12 @@ body {
 h1 {
   text-align: center;
   margin-bottom: 30px;
-  color: #2c3e50;
+  color: #6A2328;
 }
 
 .admin-button {
   display: inline-block;
-  background: #2071a7;
+  background: rgb(131, 14, 14);
   color: white;
   padding: 12px 24px;
   margin: 10px;
@@ -33,7 +33,7 @@ h1 {
 }
 
 .admin-button:hover {
-  background: #145580;
+  background: #3f191b;
 }
 
 table {
@@ -51,3 +51,35 @@ th, td {
 th {
   background-color: #ecf0f1;
 }
+
+.resetar_filtro {
+
+  color: rgb(32, 32, 32);
+  padding: 8px 12px;
+  margin: 4px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: sans-serif;
+  display: inline-block;
+}
+
+.resetar_filtro:hover {
+  color: rgb(0, 0, 0);
+}
+
+
+.botao-menu {
+  display: inline-block;
+  background-color: #6A2328;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.botao-menu:hover {
+  background-color: #4d171b;
+}
+
